@@ -119,8 +119,8 @@ impl FromStr for RPSMatch {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let split: Vec<&str> = s.split(" ").collect();
-        let enemy = if let Some(enemy) = split.get(0) {
+        let split: Vec<&str> = s.split(' ').collect();
+        let enemy = if let Some(enemy) = split.first() {
             Options::from_str(enemy)
         } else {
             return Err(String::from("Invalid input."));
@@ -132,14 +132,16 @@ impl FromStr for RPSMatch {
             return Err(String::from("Invalid input."));
         };
 
-        if enemy.is_ok() && player.is_ok() {
-            Ok(Self {
-                enemy: enemy.unwrap(),
-                player: player.unwrap(),
-            })
-        } else {
-            Err(String::from("Invalid input."))
-        }
+        
+        if let Ok(player) = player {
+            if let Ok(enemy) = enemy {
+                return Ok(Self {
+                    enemy,
+                    player
+                })
+            }
+        } 
+        Err(String::from("Invalid input."))
     }
 }
 
@@ -158,8 +160,8 @@ impl FromStr for RPSMatchV2 {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let split: Vec<&str> = s.split(" ").collect();
-        let enemy = if let Some(enemy) = split.get(0) {
+        let split: Vec<&str> = s.split(' ').collect();
+        let enemy = if let Some(enemy) = split.first() {
             Options::from_str(enemy)
         } else {
             return Err(String::from("Invalid input."));
@@ -171,14 +173,15 @@ impl FromStr for RPSMatchV2 {
             return Err(String::from("Invalid input."));
         };
 
-        if enemy.is_ok() && res.is_ok() {
-            Ok(Self {
-                enemy: enemy.unwrap(),
-                result: res.unwrap(),
-            })
-        } else {
-            Err(String::from("Invalid input."))
-        }
+        if let Ok(result) = res {
+            if let Ok(enemy) = enemy {
+                return Ok(Self {
+                    enemy,
+                    result
+                })
+            }
+        } 
+        Err(String::from("Invalid input."))
     }
 }
 
