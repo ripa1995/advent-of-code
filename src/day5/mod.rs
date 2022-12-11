@@ -7,10 +7,6 @@ use std::{
 
 use crate::open_file;
 
-struct Supplies {
-    pub stacks: Vec<Vec<char>>,
-}
-
 struct Instructions {
     pub qty: usize,
     pub from: usize,
@@ -52,17 +48,17 @@ pub fn rearrange_supplies(multiple_crates: bool) {
 
     instructions.iter().for_each(|elem| {
         let mut temp_vec = VecDeque::new();
-        for i in 0..elem.qty {
-            if let Some(temp) = stacks[elem.from-1].pop_back() {
+        for _i in 0..elem.qty {
+            if let Some(temp) = stacks[elem.from - 1].pop_back() {
                 if multiple_crates {
                     temp_vec.push_front(temp);
                 } else {
-                    stacks[elem.to-1].push_back(temp);
+                    stacks[elem.to - 1].push_back(temp);
                 }
             }
         }
         if multiple_crates {
-            stacks[elem.to-1].append(&mut temp_vec);
+            stacks[elem.to - 1].append(&mut temp_vec);
         }
     });
 
@@ -95,10 +91,8 @@ fn get_info(file: File) -> ([VecDeque<char>; 9], Vec<Instructions>) {
                 });
             } else if elem.contains(" 1   2") {
                 //do nothing
-            } else {
-                if !elem.is_empty() {
-                    instructions.push(Instructions::from_str(&elem).unwrap())
-                }
+            } else if !elem.is_empty() {
+                instructions.push(Instructions::from_str(&elem).unwrap())
             }
         }
     });
