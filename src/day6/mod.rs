@@ -1,5 +1,5 @@
 use std::{
-    collections::{VecDeque, HashSet},
+    collections::HashSet,
     fs::File,
     io::{self, BufRead},
     str::FromStr,
@@ -12,49 +12,25 @@ pub fn find_index_in_msg() -> usize {
         String::from_str("./inputs/day6/input.txt").expect("Not a string..."),
     );
 
-    find_first_start_of_message(file)
+    find(file, 14)
 }
 
-fn find_first_start_of_packet(file: File) -> usize {
-    let mut index = 0;
-
-    io::BufReader::new(file).lines().for_each(|element| {
-        if let Ok(elem) = element {
-            let chars = elem.as_bytes();
-            for i in 0..chars.len() - 3 {
-                if chars[i] != chars[i + 1]
-                    && chars[i] != chars[i + 2]
-                    && chars[i] != chars[i + 3]
-                    && chars[i + 1] != chars[i + 2]
-                    && chars[i + 1] != chars[i + 3]
-                    && chars[i + 2] != chars[i + 3]
-                    && index == 0
-                {
-                    index = i + 4;
-                }
-            }
-        }
-    });
-
-    index
-}
-
-fn find_first_start_of_message(file: File) -> usize {
+fn find(file: File, packet_size: usize) -> usize {
     let mut index = 0;
     let mut set = HashSet::new();
 
     io::BufReader::new(file).lines().for_each(|element| {
         if let Ok(elem) = element {
             let chars = elem.as_bytes();
-            for i in 0..chars.len() - 13 {
-                for j in i..i+14 {
-                   if !set.insert(chars[j]) {
-                    set.clear();
-                    break;
-                   }
+            for i in 0..chars.len() - (packet_size - 1) {
+                for item in chars.iter().skip(i).take(packet_size) {
+                    if !set.insert(*item) {
+                        set.clear();
+                        break;
+                    }
                 }
-                if set.len() == 14 {
-                    index = i + 14;
+                if set.len() == packet_size {
+                    index = i + packet_size;
                     break;
                 }
             }
