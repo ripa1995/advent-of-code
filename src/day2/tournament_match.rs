@@ -30,52 +30,40 @@ impl Options {
 
     pub fn beat(&self, other: &Self) -> MatchResult {
         match self {
-            Options::R => {
-                match other {
-                    Options::R => MatchResult::D,
-                    Options::P => MatchResult::L,
-                    Options::S => MatchResult::W,
-                }
+            Options::R => match other {
+                Options::R => MatchResult::D,
+                Options::P => MatchResult::L,
+                Options::S => MatchResult::W,
             },
-            Options::P => {
-                match other {
-                    Options::R => MatchResult::W,
-                    Options::P => MatchResult::D,
-                    Options::S => MatchResult::L,
-                }
+            Options::P => match other {
+                Options::R => MatchResult::W,
+                Options::P => MatchResult::D,
+                Options::S => MatchResult::L,
             },
-            Options::S => {
-                match other {
-                    Options::R => MatchResult::L,
-                    Options::P => MatchResult::W,
-                    Options::S => MatchResult::D,
-                }
+            Options::S => match other {
+                Options::R => MatchResult::L,
+                Options::P => MatchResult::W,
+                Options::S => MatchResult::D,
             },
         }
     }
 
     pub fn counterparty_required_for(&self, other: &MatchResult) -> Self {
         match self {
-            Options::R => {
-                match other {
-                    MatchResult::W => Options::P,
-                    MatchResult::L => Options::S,
-                    MatchResult::D => Options::R,
-                }
+            Options::R => match other {
+                MatchResult::W => Options::P,
+                MatchResult::L => Options::S,
+                MatchResult::D => Options::R,
             },
-            Options::P => {
-                match other {
-                    MatchResult::W => Options::S,
-                    MatchResult::L => Options::R,
-                    MatchResult::D => Options::P,
-                }
+            Options::P => match other {
+                MatchResult::W => Options::S,
+                MatchResult::L => Options::R,
+                MatchResult::D => Options::P,
             },
-            Options::S => {
-                match other {
-                    MatchResult::W => Options::R,
-                    MatchResult::L => Options::P,
-                    MatchResult::D => Options::S,
-                }
+            Options::S => match other {
+                MatchResult::W => Options::R,
+                MatchResult::L => Options::P,
+                MatchResult::D => Options::S,
             },
         }
     }
@@ -84,7 +72,7 @@ impl Options {
 pub enum MatchResult {
     W,
     L,
-    D
+    D,
 }
 
 impl FromStr for MatchResult {
@@ -132,15 +120,11 @@ impl FromStr for RPSMatch {
             return Err(String::from("Invalid input."));
         };
 
-        
         if let Ok(player) = player {
             if let Ok(enemy) = enemy {
-                return Ok(Self {
-                    enemy,
-                    player
-                })
+                return Ok(Self { enemy, player });
             }
-        } 
+        }
         Err(String::from("Invalid input."))
     }
 }
@@ -175,18 +159,16 @@ impl FromStr for RPSMatchV2 {
 
         if let Ok(result) = res {
             if let Ok(enemy) = enemy {
-                return Ok(Self {
-                    enemy,
-                    result
-                })
+                return Ok(Self { enemy, result });
             }
-        } 
+        }
         Err(String::from("Invalid input."))
     }
 }
 
 impl RPSMatchV2 {
     pub fn eval_match(&self) -> u8 {
-        self.result.value() + self.enemy.counterparty_required_for(&self.result).value()
+        self.result.value()
+            + self.enemy.counterparty_required_for(&self.result).value()
     }
 }

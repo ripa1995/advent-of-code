@@ -1,7 +1,7 @@
 use std::{
     fs::File,
     io::{self, BufRead},
-    str::FromStr
+    str::FromStr,
 };
 
 use crate::open_file;
@@ -12,8 +12,11 @@ pub fn sum_priorities() -> u64 {
     );
 
     let duplicated = get_duplicated_values(file);
-    
-    let sum = duplicated.iter().map(|x| calculate_priority_value(*x)).sum();
+
+    let sum = duplicated
+        .iter()
+        .map(|x| calculate_priority_value(*x))
+        .sum();
 
     sum
 }
@@ -24,7 +27,7 @@ pub fn sum_group_badges() -> u64 {
     );
 
     let badges = get_group_badges(file);
-    
+
     let sum = badges.iter().map(|x| calculate_priority_value(*x)).sum();
 
     sum
@@ -35,7 +38,7 @@ fn get_duplicated_values(file: File) -> Vec<char> {
 
     io::BufReader::new(file).lines().for_each(|element| {
         if let Ok(elem) = element {
-            let (first,second) = elem.split_at(elem.len()/2);
+            let (first, second) = elem.split_at(elem.len() / 2);
             for ch in first.chars() {
                 if second.contains(ch) {
                     duplicated.push(ch);
@@ -79,6 +82,6 @@ fn calculate_priority_value(ch: char) -> u64 {
     if ('A'..='Z').contains(&ch) {
         (ch as u64 % 65) + 27
     } else {
-        (ch as u64 % 97) + 1 
+        (ch as u64 % 97) + 1
     }
 }

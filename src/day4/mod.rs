@@ -72,6 +72,7 @@ fn check_overlapping(
     high_first: u64,
     high_second: u64,
 ) -> bool {
-    ((low_first >= low_second && low_first <= high_second) || (low_first <= low_second && high_first >= low_second))
-    || check_fully_contained(low_first, low_second, high_first, high_second)
+    ((low_first >= low_second && low_first <= high_second)
+        || (low_first <= low_second && high_first >= low_second))
+        || check_fully_contained(low_first, low_second, high_first, high_second)
 }
