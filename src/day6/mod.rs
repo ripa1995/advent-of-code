@@ -9,7 +9,7 @@ use crate::open_file;
 
 pub fn find_index_in_msg() -> usize {
     let file = open_file(
-        String::from_str("./inputs/day6/input.txt").expect("Not a string..."),
+        String::from_str("./inputs/day6.txt").expect("Not a string..."),
     );
 
     find(file, 14)

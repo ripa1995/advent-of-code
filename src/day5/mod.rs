@@ -41,7 +41,7 @@ impl FromStr for Instructions {
 
 pub fn rearrange_supplies(multiple_crates: bool) {
     let file = open_file(
-        String::from_str("./inputs/day5/input.txt").expect("Not a string..."),
+        String::from_str("./inputs/day5.txt").expect("Not a string..."),
     );
 
     let (mut stacks, instructions) = get_info(file);

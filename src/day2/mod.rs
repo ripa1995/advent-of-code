@@ -10,7 +10,7 @@ use crate::open_file;
 
 pub fn find_max_possible_score() -> u64 {
     let file = open_file(
-        String::from_str("./inputs/day2/input.txt").expect("Not a string..."),
+        String::from_str("./inputs/day2.txt").expect("Not a string..."),
     );
     get_max_score(file)
 }
@@ -31,7 +31,7 @@ fn get_max_score(file: File) -> u64 {
 
 pub fn find_max_possible_score_v2() -> u64 {
     let file = open_file(
-        String::from_str("./inputs/day2/input.txt").expect("Not a string..."),
+        String::from_str("./inputs/day2.txt").expect("Not a string..."),
     );
     get_max_score_v2(file)
 }

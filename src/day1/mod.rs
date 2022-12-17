@@ -8,7 +8,7 @@ use crate::open_file;
 
 pub fn find_top_n_calories_carried(elf_num: usize) -> u64 {
     let file = open_file(
-        String::from_str("./inputs/day1/input.txt").expect("Not a string..."),
+        String::from_str("./inputs/day1.txt").expect("Not a string..."),
     );
 
     let mut calories = get_grouped_elf_calories(file);

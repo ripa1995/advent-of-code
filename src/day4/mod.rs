@@ -8,7 +8,7 @@ use crate::open_file;
 
 pub fn get_overlapping_assignemnt_number() -> u64 {
     let file = open_file(
-        String::from_str("./inputs/day4/input.txt").expect("Not a string..."),
+        String::from_str("./inputs/day4.txt").expect("Not a string..."),
     );
 
     count_assignment(file, &check_overlapping)

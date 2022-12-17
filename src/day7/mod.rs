@@ -22,7 +22,7 @@ struct FileInfo {
 
 pub fn calculate_sum() {
     let file = open_file(
-        String::from_str("./inputs/day7/input.txt").expect("Not a string..."),
+        String::from_str("./inputs/day7.txt").expect("Not a string..."),
     );
 
     let dir = build_directories(file);
@@ -33,7 +33,7 @@ pub fn calculate_sum() {
 
 pub fn get_directory_to_be_deleted() {
     let file = open_file(
-        String::from_str("./inputs/day7/input.txt").expect("Not a string..."),
+        String::from_str("./inputs/day7.txt").expect("Not a string..."),
     );
 
     let dir = build_directories(file);
@@ -45,7 +45,6 @@ pub fn get_directory_to_be_deleted() {
     directories_size.sort();
     println!("{:?}", directories_size.get(0));
 }
-
 
 fn build_directory(
     lines: &mut VecDeque<Result<String, std::io::Error>>,

@@ -8,7 +8,7 @@ use crate::open_file;
 
 pub fn sum_priorities() -> u64 {
     let file = open_file(
-        String::from_str("./inputs/day3/input.txt").expect("Not a string..."),
+        String::from_str("./inputs/day3.txt").expect("Not a string..."),
     );
 
     let duplicated = get_duplicated_values(file);
@@ -23,7 +23,7 @@ pub fn sum_priorities() -> u64 {
 
 pub fn sum_group_badges() -> u64 {
     let file = open_file(
-        String::from_str("./inputs/day3/input.txt").expect("Not a string..."),
+        String::from_str("./inputs/day3.txt").expect("Not a string..."),
     );
 
     let badges = get_group_badges(file);
