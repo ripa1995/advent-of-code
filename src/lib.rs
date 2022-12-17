@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use std::fs::File;
 pub mod day1;
 pub mod day2;

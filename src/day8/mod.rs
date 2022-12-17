@@ -1,5 +1,4 @@
 use std::{
-    collections::{HashSet, VecDeque},
     fs::File,
     io::{self, BufRead},
     str::FromStr,
@@ -118,7 +117,6 @@ pub fn get_best_scenic_score() {
         if let Some(row) = map.get(i) {
             for j in 0..row.len() {
                 if let Some(current_tree) = row.get(j) {
-                    let mut current_scenic_score = 0;
                     //check up
                     let mut up_score = 0;
                     for up in (0..i).rev() {
@@ -163,7 +161,7 @@ pub fn get_best_scenic_score() {
                             }
                         }
                     }
-                    current_scenic_score =
+                    let current_scenic_score =
                         up_score * down_score * left_score * right_score;
                     if best_scenic_score < current_scenic_score {
                         best_scenic_score = current_scenic_score;

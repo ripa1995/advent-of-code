@@ -1,5 +1,5 @@
 use std::{
-    collections::{HashSet, VecDeque},
+    collections::VecDeque,
     fs::File,
     io::{self, BufRead},
     str::FromStr,
@@ -43,15 +43,17 @@ pub fn get_directory_to_be_deleted() {
     let mut directories_size = Vec::new();
     get_directory_could_be_deleted(&dir, need_to_free, &mut directories_size);
     directories_size.sort();
-    println!("{:?}", directories_size.get(0));
+    println!("{:?}", directories_size.first());
 }
 
 fn build_directory(
     lines: &mut VecDeque<Result<String, std::io::Error>>,
-    dirName: String,
+    dir_name: String,
 ) -> DirectoryInfo {
-    let mut directory = DirectoryInfo::default();
-    directory.name = dirName;
+    let mut directory = DirectoryInfo {
+        name: dir_name,
+        ..Default::default()
+    };
     while let Some(val) = lines.pop_front() {
         if let Ok(val) = val {
             let mut splitted = val.split(' ');
@@ -62,11 +64,11 @@ fn build_directory(
                         match (splitted.next(), splitted.next()) {
                             (Some("cd"), Some("..")) => return directory,
                             (Some("cd"), Some(dir_name)) => {
-                                let subDir = build_directory(
+                                let sub_dir = build_directory(
                                     lines,
                                     dir_name.to_string(),
                                 );
-                                directory.sub_dir.push(subDir);
+                                directory.sub_dir.push(sub_dir);
                             }
                             _ => {}
                         }
@@ -87,19 +89,19 @@ fn build_directory(
             }
         }
     }
-    return directory;
+    directory
 }
 
 fn build_directories(file: File) -> DirectoryInfo {
-    let mut baseDir = DirectoryInfo::default();
+    let mut base_dir = DirectoryInfo::default();
 
     let mut lines: VecDeque<_> = io::BufReader::new(file).lines().collect();
 
-    if let Some(first) = lines.pop_front() {
-        baseDir = build_directory(&mut lines, "/".to_string())
+    if let Some(_first) = lines.pop_front() {
+        base_dir = build_directory(&mut lines, "/".to_string())
     }
 
-    baseDir
+    base_dir
 }
 
 fn sum_directories_with_size_less_than(
@@ -107,7 +109,6 @@ fn sum_directories_with_size_less_than(
     limit: u64,
     cumulated_sum: &mut u64,
 ) -> u64 {
-    let mut current_dir_size = 0;
     let files_size: u64 = dir.files.iter().map(|x| x.size).sum();
     let mut directories_size = 0;
     for directory in &dir.sub_dir {
@@ -117,7 +118,7 @@ fn sum_directories_with_size_less_than(
             cumulated_sum,
         );
     }
-    current_dir_size = files_size + directories_size;
+    let current_dir_size = files_size + directories_size;
     if current_dir_size <= limit {
         *cumulated_sum += current_dir_size;
     }
@@ -129,7 +130,6 @@ fn get_directory_could_be_deleted(
     required: u64,
     list_directories_size: &mut Vec<u64>,
 ) -> u64 {
-    let mut current_dir_size = 0;
     let files_size: u64 = dir.files.iter().map(|x| x.size).sum();
     let mut directories_size = 0;
     for directory in &dir.sub_dir {
@@ -139,7 +139,7 @@ fn get_directory_could_be_deleted(
             list_directories_size,
         );
     }
-    current_dir_size = files_size + directories_size;
+    let current_dir_size = files_size + directories_size;
     if current_dir_size > required {
         list_directories_size.push(current_dir_size)
     }
