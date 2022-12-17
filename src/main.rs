@@ -1,3 +1,3 @@
 fn main() {
-    advent_of_code::day7::get_directory_to_be_deleted()
+    advent_of_code::day8::get_best_scenic_score()
 }
